@@ -23,9 +23,9 @@ const OpcodeAction instructions[32] = {
     {OPCODE_NOT, opcode_not},
     {OPCODE_AND, opcode_jump},
 
-}
+};
 
-
+int execute(instruction ins);
 
 
 #endif
