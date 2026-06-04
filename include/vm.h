@@ -27,4 +27,17 @@ typedef struct vm
     unit16 r3;
 }vm;
 
+typedef struct instruction
+{
+    unit16 opcode:3;
+    unit16 r0:2;
+    unit16 r1:2;
+    unit16 r2:2;
+}instruction;
+
+int run_vm(FILE* file);
+int fetch(vm*);
+int decode(instruction ins);
+int writeback(unit16 reg, unit16 addr);
+
 #endif
