@@ -25,7 +25,7 @@ const OpcodeAction instructions[32] = {
 
 };
 
-int execute(instruction ins);
+int execute(vm*);
 
 
 #endif

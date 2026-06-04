@@ -17,16 +17,6 @@ typedef struct memory
     unit8 ofset;
 }memory;
 
-typedef struct vm
-{
-    unit16 ip;
-    unit16 ir;
-    unit16 r0;
-    unit16 r1;
-    unit16 r2;
-    unit16 r3;
-}vm;
-
 typedef struct instruction
 {
     unit16 opcode:3;
@@ -35,9 +25,19 @@ typedef struct instruction
     unit16 r2:2;
 }instruction;
 
+typedef struct vm
+{
+    instruction ir;
+    unit16 ip;
+    unit16 r0;
+    unit16 r1;
+    unit16 r2;
+    unit16 r3;
+}vm;
+
 int run_vm(FILE* file);
 int fetch(vm*);
-int decode(instruction ins);
+int decode(instruction ir);
 int writeback(unit16 reg, unit16 addr);
 
 #endif
