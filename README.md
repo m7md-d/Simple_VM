@@ -26,7 +26,7 @@ pointer runs past the end of the code.
 ## Building
 
 ```sh
-gcc -Wall -Wextra -Iinclude src/main.c src/vm.c src/execute.c -o svm
+gcc -Wall -Wextra -Iinclude src/*.c -o svm
 ```
 
 ## Usage
