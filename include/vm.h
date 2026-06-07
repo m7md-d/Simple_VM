@@ -1,43 +1,46 @@
 #ifndef VM_H
 #define VM_H
 
-typedef unsigned char unit8;
-typedef unsigned short unit16;
+#include <stdint.h>
+#include <stddef.h>
 
 typedef struct memory
 {
-    unit8 *value;
-
-    unit16 data_base;
-    unit16 data_size;
-
-    unit16 code_base;
-    unit16 code_size;
-
-    unit8 ofset;
+    struct {
+        uint32_t magic_n;
+        uint16_t version;
+        uint16_t data_size;
+    }meta;
+    uint8_t value[];
 }memory;
 
 typedef struct instruction
 {
-    unit16 opcode:3;
-    unit16 r0:2;
-    unit16 r1:2;
-    unit16 r2:2;
+    uint16_t opcode:3;
+    uint16_t r0:2;
+    uint16_t r1:2;
+    uint16_t r2:2;
+    uint16_t is_data:1;
 }instruction;
 
 typedef struct vm
 {
     instruction ir;
-    unit16 ip;
-    unit16 r0;
-    unit16 r1;
-    unit16 r2;
-    unit16 r3;
+    uint16_t ip;
+    uint16_t r0;
+    uint16_t r1;
+    uint16_t r2;
+    uint16_t r3;
+    memory *mem;
 }vm;
 
-int run_vm(FILE* file);
-int fetch(vm*);
+
+int creat_memory(const char *path, uint16_t data_size);
+memory *read_memory(const char *path);
+instruction *read_code(const char *path, size_t *code_count);
+int run_vm(memory *mem, instruction *code, size_t code_count);
+int fetch(vm*, instruction *code);
 int decode(instruction ir);
-int writeback(unit16 reg, unit16 addr);
+int writeback(vm *v);
 
 #endif

@@ -11,21 +11,11 @@ typedef enum InstructionOpcode {
     OPCODE_AND,
     OPCODE_OR,
     OPCODE_NOT,
-    OPCODE_JUMP
+    OPCODE_JUMP,
+    OPCODE_COUNT
 }InstructionOpcode;
 
-const OpcodeAction instructions[32] = {
-    {OPCODE_AND, opcode_add},
-    {OPCODE_OR, opcode_sub},
-    {OPCODE_NOT, opcode_dw},
-    {OPCODE_AND, opcode_sw},
-    {OPCODE_OR, opcode_and},
-    {OPCODE_NOT, opcode_not},
-    {OPCODE_AND, opcode_jump},
-
-};
-
-int execute(vm*);
-
+uint16_t *get_register(vm *v, uint16_t idx);
+int execute(vm *v);
 
 #endif
