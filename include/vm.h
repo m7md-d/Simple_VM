@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#define VM_MAGIC 0xFFD8DEAD
+
 typedef struct memory
 {
     struct {

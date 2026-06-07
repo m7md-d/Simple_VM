@@ -13,7 +13,7 @@ int creat_memory(const char *path, uint16_t data_size)
 
     memory mem;
 
-    mem.meta.magic_n = 0xFFD8DEAD;
+    mem.meta.magic_n = VM_MAGIC;
     mem.meta.version = 1;
     mem.meta.data_size = data_size;
 
@@ -42,11 +42,32 @@ int creat_memory(const char *path, uint16_t data_size)
 memory *read_memory(const char *path)
 {
     FILE *f = fopen(path, "rb");
+    if (!f) return NULL;
+
     memory tmp;
-    fread(&tmp.meta, sizeof(tmp.meta), 1, f);
+    if (fread(&tmp.meta, sizeof(tmp.meta), 1, f) != 1) {
+        fclose(f);
+        return NULL;
+    }
+
+    if (tmp.meta.magic_n != VM_MAGIC) {
+        fclose(f);
+        return NULL;
+    }
+
     memory *mem = malloc(sizeof(memory) + tmp.meta.data_size);
+    if (!mem) {
+        fclose(f);
+        return NULL;
+    }
     mem->meta = tmp.meta;
-    fread(mem->value, 1, mem->meta.data_size, f);
+
+    if (fread(mem->value, 1, mem->meta.data_size, f) != mem->meta.data_size) {
+        free(mem);
+        fclose(f);
+        return NULL;
+    }
+
     fclose(f);
     return (mem);
 }
